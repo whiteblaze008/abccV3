@@ -1,0 +1,15 @@
+{
+  "name": "abcc",
+  "version": "3.0.0",
+  "description": "ABCC - Cricket Booking Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

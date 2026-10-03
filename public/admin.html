@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>ABCC Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0F6B4A;
+      --accent: #FF6B35;
+      --success: #2ECC71;
+      --danger: #E74C3C;
+      --warning: #F39C12;
+      --bg: #F8F9FA;
+      --card: #FFFFFF;
+      --text: #1A1A1A;
+      --muted: #666666;
+      --border: #E0E0E0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      background: var(--border);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* Login Screen */
+    .login-screen {
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 40px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .login-screen h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 107, 74, 0.1);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Bookings List */
+    .bookings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .booking-card {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .booking-name {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-badge.pending {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .status-badge.confirmed {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .status-badge.rejected {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .booking-details {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .detail-row b {
+      color: var(--text);
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn.confirm {
+      background: var(--success);
+      color: white;
+    }
+
+    .action-btn.reject {
+      background: var(--danger);
+      color: white;
+    }
+
+    .action-btn.delete {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Collapse Sections */
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header:hover {
+      background: #F5F5F5;
+    }
+
+    .section-content {
+      padding: 16px;
+      display: none;
+    }
+
+    .section-content.active {
+      display: block;
+    }
+
+    .chevron {
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+
+    .section-content.active ~ .section-header .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-grid.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    .history-item {
+      padding: 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .success-msg {
+      color: var(--success);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-details {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <h1>ABCC Admin</h1>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter admin password">
+    </div>
+    <button class="login-btn" onclick="login()">Log In</button>
+    <div class="error-msg" id="login-error" style="text-align: center; margin-top: 16px;"></div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="dashboard" hidden>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>ABCC Admin</h1>
+        <button class="logout-btn" onclick="logout()">Log Out</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="number" id="stat-confirmed">0</div>
+          <div class="label">Confirmed</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="stat-pending">0</div>
+          <div class="label">Awaiting</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="stat-revenue">₹0</div>
+          <div class="label">Collected</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('pending')">Awaiting Confirmation</button>
+        <button class="tab-btn" onclick="switchTab('confirmed')">Confirmed</button>
+        <button class="tab-btn" onclick="switchTab('all')">All Bookings</button>
+      </div>
+
+      <!-- Bookings List -->
+      <div class="bookings-list" id="bookings-list"></div>
+
+      <!-- Match Settings -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          ⚙️ Match Settings
+          <span class="chevron">▼</span>
+        </div>
+        <div class="section-content">
+          <div class="form-grid full">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="text" id="date" placeholder="e.g., Saturday, 10 October">
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Time</label>
+                <input type="text" id="time" placeholder="e.g., 9:00 PM – 11:00 PM">
+              </div>
+              <div class="form-group">
+                <label>Venue</label>
+                <input type="text" id="venue" placeholder="Cricket ground name">
+              </div>
+            </div>
+            <div class="form-group full">
+              <label>Google Maps Link</label>
+              <input type="url" id="maps" placeholder="https://maps.google.com/...">
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Price per Player (₹)</label>
+                <input type="number" id="price" min="100" max="10000">
+              </div>
+              <div class="form-group">
+                <label>Max Players</label>
+                <input type="number" id="max" min="1" max="100" value="16">
+              </div>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="open">
+              <label for="open">Bookings open</label>
+            </div>
+            <button class="save-btn" onclick="saveMatch()">Save Settings</button>
+            <div id="save-msg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backup & Next Match -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+          📦 Backup & Next Match
+          <span class="chevron">▼</span>
+        </div>
+        <div class="section-content">
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+            Download a backup after every match. Free Render hosting can lose data on restart.
+          </p>
+          <button class="save-btn" style="background: var(--accent); margin-bottom: 12px;" onclick="downloadBackup()">
+            Download Backup
+          </button>
+          <button class="save-btn" style="background: var(--primary);" onclick="restoreBackup()">
+            Restore from Backup
+          </button>
+          <input type="file" id="backup-file" accept=".json" hidden onchange="processRestore()">
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 20px 0;">
+
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+            When done with this match, save it to history and start a new one.
+          </p>
+          <button class="save-btn" style="background: var(--danger);" onclick="nextMatch()">
+            Match Finished: Start Next
+          </button>
+
+          <div style="margin-top: 20px;">
+            <h4 style="margin-bottom: 12px;">Match History</h4>
+            <div id="history-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let password = null;
+    let data = null;
+    let currentTab = 'pending';
+
+    const $ = (id) => document.getElementById(id);
+    const API = (path, method = 'GET', body = null) =>
+      fetch(path, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin': password || ''
+        },
+        body: body ? JSON.stringify(body) : null
+      }).then(r => r.json()).then(d => {
+        if (r.status === 401) {
+          logout();
+          throw new Error('Session expired');
+        }
+        if (!d.error) return d;
+        throw new Error(d.error);
+      });
+
+    async function login() {
+      const pw = $('password').value;
+      try {
+        const result = await fetch('/api/admin', {
+          headers: { 'x-admin': pw }
+        }).then(r => r.json());
+
+        if (result.error) {
+          $('login-error').textContent = 'Wrong password';
+          return;
+        }
+
+        password = pw;
+        sessionStorage.setItem('abcc_admin_pw', pw);
+        loadDashboard();
+      } catch (e) {
+        $('login-error').textContent = e.message;
+      }
+    }
+
+    async function loadDashboard() {
+      try {
+        data = await API('/api/admin');
+        renderDashboard();
+        $('login-screen').hidden = true;
+        $('dashboard').hidden = false;
+      } catch (e) {
+        $('login-error').textContent = e.message;
+      }
+    }
+
+    function renderDashboard() {
+      // Stats
+      $('stat-confirmed').textContent = data.stats.confirmed;
+      $('stat-pending').textContent = data.stats.pending;
+      $('stat-revenue').textContent = '₹' + data.stats.revenue.toLocaleString();
+
+      // Match settings
+      $('date').value = data.match.date;
+      $('time').value = data.match.time;
+      $('venue').value = data.match.venue;
+      $('maps').value = data.match.maps;
+      $('price').value = data.match.price;
+      $('max').value = data.match.max;
+      $('open').checked = data.match.open;
+
+      // History
+      $('history-list').innerHTML = data.history.length
+        ? data.history.map(h => `
+            <div class="history-item">
+              <strong>${h.date}</strong> — ${h.players} players, ₹${h.revenue}
+            </div>
+          `).join('')
+        : '<p style="color: var(--muted); font-size: 13px;">No match history yet</p>';
+
+      renderBookings();
+    }
+
+    function renderBookings() {
+      const filtered = data.bookings.filter(b => {
+        if (currentTab === 'pending') return b.status === 'pending';
+        if (currentTab === 'confirmed') return b.status === 'confirmed';
+        return true;
+      });
+
+      $('bookings-list').innerHTML = filtered.length
+        ? filtered.map(b => `
+            <div class="booking-card">
+              <div class="booking-header">
+                <div class="booking-name">${b.name || 'Player'}</div>
+                <span class="status-badge ${b.status}">${b.status}</span>
+              </div>
+              <div class="booking-details">
+                <div class="detail-row"><span>Mobile:</span><b>${b.mobile}</b></div>
+                <div class="detail-row"><span>Players:</span><b>${b.players}</b></div>
+                <div class="detail-row"><span>Amount:</span><b>₹${b.amount}</b></div>
+              </div>
+              <div class="booking-actions">
+                ${b.status === 'pending' ? `
+                  <button class="action-btn confirm" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>
+                  <button class="action-btn reject" onclick="updateStatus('${b.id}', 'rejected')">Reject</button>
+                ` : ''}
+                <button class="action-btn delete" onclick="deleteBooking('${b.id}')">Delete</button>
+              </div>
+              <a href="https://wa.me/91${b.mobile}?text=Hi%20${b.name},%20your%20ABCC%20booking%20${b.id}%20is%20confirmed!"
+                target="_blank" style="display: block; margin-top: 10px; font-size: 12px; color: var(--primary);">
+                💬 Message on WhatsApp
+              </a>
+            </div>
+          `).join('')
+        : '<p style="text-align: center; color: var(--muted);">No bookings in this category</p>';
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderBookings();
+    }
+
+    async function updateStatus(id, status) {
+      try {
+        await API(`/api/admin/booking/${id}`, 'POST', { status });
+        await loadDashboard();
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function deleteBooking(id) {
+      if (!confirm('Delete this booking?')) return;
+      try {
+        await API(`/api/admin/booking/${id}/delete`, 'POST', {});
+        await loadDashboard();
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function saveMatch() {
+      try {
+        await API('/api/admin/match', 'POST', {
+          date: $('date').value,
+          time: $('time').value,
+          venue: $('venue').value,
+          maps: $('maps').value,
+          price: parseInt($('price').value),
+          max: parseInt($('max').value),
+          open: $('open').checked
+        });
+        $('save-msg').innerHTML = '<div class="success-msg">Saved!</div>';
+        setTimeout(() => { $('save-msg').innerHTML = ''; }, 2000);
+      } catch (e) {
+        $('save-msg').innerHTML = '<div class="error-msg">Error: ' + e.message + '</div>';
+      }
+    }
+
+    function downloadBackup() {
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'abcc-backup-' + new Date().toISOString().split('T')[0] + '.json';
+      a.click();
+    }
+
+    function restoreBackup() {
+      $('backup-file').click();
+    }
+
+    async function processRestore() {
+      const file = $('backup-file').files[0];
+      if (!file) return;
+
+      try {
+        const content = JSON.parse(await file.text());
+        if (!confirm('Replace all data with this backup?')) return;
+
+        await API('/api/admin/restore', 'POST', content);
+        await loadDashboard();
+        alert('Restored successfully!');
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function nextMatch() {
+      if (!confirm('Archive this match to history and clear all bookings?')) return;
+      try {
+        await API('/api/admin/next', 'POST', {});
+        await loadDashboard();
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      content.classList.toggle('active');
+    }
+
+    function logout() {
+      password = null;
+      sessionStorage.removeItem('abcc_admin_pw');
+      $('password').value = '';
+      $('dashboard').hidden = true;
+      $('login-screen').hidden = false;
+    }
+
+    // Check if already logged in
+    const savedPw = sessionStorage.getItem('abcc_admin_pw');
+    if (savedPw) {
+      password = savedPw;
+      loadDashboard();
+    }
+
+    // Refresh every 30 seconds
+    setInterval(() => {
+      if (password && !$('login-screen').hidden === false) {
+        loadDashboard().catch(() => {});
+      }
+    }, 30000);
+  </script>
+</body>
+</html>

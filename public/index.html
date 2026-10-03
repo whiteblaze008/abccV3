@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0F6B4A">
+  <title>ABCC - Book Your Cricket Slot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0F6B4A;
+      --accent: #FF6B35;
+      --success: #2ECC71;
+      --bg: #F8F9FA;
+      --card: #FFFFFF;
+      --text: #1A1A1A;
+      --muted: #666666;
+      --border: #E0E0E0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Header */
+    .header {
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Hero Card */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #0D5A40 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(15, 107, 74, 0.15);
+    }
+
+    .hero .date {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero .time {
+      font-size: 16px;
+      opacity: 0.95;
+      margin-bottom: 16px;
+    }
+
+    .hero .venue {
+      font-size: 14px;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    /* Info Cards */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .info-card {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .info-card .number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .info-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Slot Counter */
+    .counter-section {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .counter-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .counter-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .counter-btn:active {
+      transform: scale(0.95);
+    }
+
+    .counter-btn:hover {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    .counter-display {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .price-info {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .price-info .amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Trust Signals */
+    .trust-section {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .trust-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .trust-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .trust-item::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      min-width: 16px;
+    }
+
+    /* CTA Button */
+    .cta-button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--accent) 0%, #E55A2B 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+    }
+
+    .cta-button:active {
+      transform: scale(0.98);
+    }
+
+    .cta-button:disabled {
+      background: var(--border);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .cta-button:hover:not(:disabled) {
+      box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      animation: fadeIn 0.3s;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--card);
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+      animation: slideUp 0.3s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group .error {
+      color: #E74C3C;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .form-actions button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .form-actions .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .form-actions .secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* Payment Screen */
+    .payment-screen {
+      display: none;
+      text-align: center;
+    }
+
+    .payment-screen.active {
+      display: block;
+    }
+
+    .amount-display {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 20px 0;
+    }
+
+    .qr-container {
+      background: var(--bg);
+      padding: 20px;
+      border-radius: 16px;
+      margin: 20px 0;
+    }
+
+    #qr {
+      display: inline-block;
+    }
+
+    .qr-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    .upi-link {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    /* Success Screen */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-screen.active {
+      display: block;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--success);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin: 20px auto;
+    }
+
+    .booking-id {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary);
+      margin: 16px 0;
+      cursor: pointer;
+    }
+
+    .countdown {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 16px 0;
+    }
+
+    .countdown.warning {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 12px;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>ABCC</h1>
+      <p>Ahmedabad Box Cricket Community</p>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-screen">
+      <!-- Hero Card -->
+      <div class="hero">
+        <div class="date" id="match-date">Saturday</div>
+        <div class="time" id="match-time">9:00 PM – 11:00 PM</div>
+        <div class="venue">
+          <span>📍</span>
+          <span id="match-venue">Loading venue...</span>
+        </div>
+        <div class="badge" id="urgency-badge" hidden></div>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="number" id="confirmed-count">0</div>
+          <div class="label">Confirmed</div>
+        </div>
+        <div class="info-card">
+          <div class="number" id="slots-left">16</div>
+          <div class="label">Slots Left</div>
+        </div>
+      </div>
+
+      <!-- Counter Section -->
+      <div class="counter-section">
+        <h3>Select Players</h3>
+        <div class="counter">
+          <button class="counter-btn" onclick="decreaseCount()">−</button>
+          <div class="counter-display" id="player-count">1</div>
+          <button class="counter-btn" onclick="increaseCount()">+</button>
+        </div>
+        <div class="price-info">
+          ₹<span class="amount" id="total-price">250</span> total
+        </div>
+      </div>
+
+      <!-- Trust Section -->
+      <div class="trust-section">
+        <div class="trust-item">Pay directly to ABCC by UPI</div>
+        <div class="trust-item">Your number is kept private</div>
+        <div class="trust-item">Instant confirmation via WhatsApp</div>
+      </div>
+
+      <!-- CTA Button -->
+      <button class="cta-button" id="book-btn" onclick="openBookingModal()">
+        Book Your Spot
+      </button>
+    </main>
+  </div>
+
+  <!-- Booking Modal -->
+  <div class="modal" id="booking-modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+      <div class="modal-header">Complete Your Booking</div>
+
+      <div class="form-group">
+        <label>Mobile Number (WhatsApp)</label>
+        <input
+          type="tel"
+          id="mobile"
+          placeholder="9876543210"
+          maxlength="10"
+          inputmode="numeric"
+        >
+        <div class="error" id="mobile-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Your Name (optional)</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Your name"
+          maxlength="60"
+        >
+      </div>
+
+      <div style="background: #F0F7F5; padding: 12px; border-radius: 8px; margin: 16px 0; font-size: 13px; color: var(--muted);">
+        <strong>Summary:</strong> <span id="booking-summary"></span>
+      </div>
+
+      <div class="form-actions">
+        <button class="secondary" onclick="closeModal()">Cancel</button>
+        <button class="primary" onclick="proceedToPayment()" id="confirm-btn">
+          Proceed to Pay
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal" id="payment-modal" onclick="if(event.target===this)closePaymentModal()">
+    <div class="modal-content">
+      <div class="modal-header">Payment</div>
+
+      <!-- Payment Screen Content -->
+      <div class="payment-screen active" id="pay-screen">
+        <div class="amount-display" id="pay-amount">₹250</div>
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 20px;">
+          <span id="hold-timer">Slots held for 15:00</span>
+        </p>
+
+        <button class="cta-button" id="upi-btn" onclick="launchUPI()">
+          Open UPI App
+        </button>
+
+        <div class="qr-container">
+          <div id="qr"></div>
+          <p class="qr-label">Or scan with any UPI app</p>
+        </div>
+
+        <p style="font-size: 12px; color: var(--muted); margin-top: 16px;">
+          <a class="upi-link" onclick="copyUPI()">Copy UPI ID for manual transfer</a>
+        </p>
+
+        <div id="pay-error" class="error" style="margin-top: 16px;"></div>
+
+        <div class="form-actions" style="margin-top: 24px;">
+          <button class="secondary" onclick="closePaymentModal()">Back</button>
+          <button class="primary" onclick="confirmPayment()" id="paid-btn">
+            I've Paid ✓
+          </button>
+        </div>
+      </div>
+
+      <!-- Success Screen -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">✓</div>
+        <h2 style="color: var(--primary); margin: 16px 0;">You're In!</h2>
+        <p style="color: var(--muted); margin-bottom: 16px;">
+          We're confirming your payment. Sit tight!
+        </p>
+        <div class="booking-id" id="booking-id-display" onclick="copyBookingId()">
+          ABCC-XXXX
+        </div>
+        <div class="countdown" id="status-text">
+          Confirming payment... Usually takes 1-2 minutes
+        </div>
+
+        <button class="cta-button" onclick="backToHome()" style="margin-top: 24px;">
+          Back to Home
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    let matchData = null;
+    let currentBooking = null;
+    let playerCount = 1;
+    let confirmPollTimer = null;
+
+    const $ = (id) => document.getElementById(id);
+    const API = (path, method = 'GET', body = null) =>
+      fetch(path, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : null
+      }).then(r => r.json()).then(d => {
+        if (!d.error) return d;
+        throw new Error(d.error);
+      });
+
+    // Load match data
+    async function loadMatch() {
+      try {
+        matchData = await API('/api/match');
+        renderMatch();
+      } catch (e) {
+        console.error('Failed to load match:', e);
+      }
+    }
+
+    function renderMatch() {
+      $('match-date').textContent = matchData.date;
+      $('match-time').textContent = matchData.time;
+      $('match-venue').textContent = matchData.venue || 'Location TBA';
+      $('confirmed-count').textContent = matchData.confirmed;
+      $('slots-left').textContent = matchData.left;
+
+      const urgency = $('urgency-badge');
+      if (matchData.left > 0 && matchData.left <= 4) {
+        urgency.hidden = false;
+        urgency.textContent = `⚡ Only ${matchData.left} slot${matchData.left > 1 ? 's' : ''} left!`;
+      }
+
+      $('book-btn').disabled = !matchData.open || matchData.left === 0;
+      $('book-btn').textContent = !matchData.open ? 'Bookings Closed' : (matchData.left === 0 ? 'Match Full' : 'Book Your Spot');
+    }
+
+    function increaseCount() {
+      playerCount = Math.min(playerCount + 1, matchData.left || 1);
+      updateCounter();
+    }
+
+    function decreaseCount() {
+      playerCount = Math.max(playerCount - 1, 1);
+      updateCounter();
+    }
+
+    function updateCounter() {
+      $('player-count').textContent = playerCount;
+      const price = playerCount * matchData.price;
+      $('total-price').textContent = price;
+    }
+
+    function openBookingModal() {
+      $('booking-summary').textContent = `${playerCount} player${playerCount > 1 ? 's' : ''} × ₹${matchData.price} = ₹${playerCount * matchData.price}`;
+      $('booking-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      $('booking-modal').classList.remove('active');
+      $('mobile-error').textContent = '';
+    }
+
+    async function proceedToPayment() {
+      const mobile = $('mobile').value.trim();
+      const name = $('name').value.trim();
+
+      $('mobile-error').textContent = '';
+
+      if (!/^[6-9]\d{9}$/.test(mobile)) {
+        $('mobile-error').textContent = 'Enter a valid 10-digit number';
+        return;
+      }
+
+      $('confirm-btn').disabled = true;
+
+      try {
+        currentBooking = await API('/api/book', 'POST', {
+          mobile,
+          players: playerCount,
+          name: name || 'Player'
+        });
+
+        closeModal();
+        openPaymentModal();
+        generateQR();
+        startTimer();
+
+        // Resume existing booking
+        const savedBooking = localStorage.getItem('abcc_booking');
+        if (savedBooking && JSON.parse(savedBooking).id === currentBooking.id) {
+          localStorage.setItem('abcc_booking', JSON.stringify(currentBooking));
+        }
+      } catch (e) {
+        $('mobile-error').textContent = e.message;
+      }
+
+      $('confirm-btn').disabled = false;
+    }
+
+    function openPaymentModal() {
+      const amount = currentBooking.amount;
+      $('pay-amount').textContent = `₹${amount}`;
+      $('payment-modal').classList.add('active');
+    }
+
+    function closePaymentModal() {
+      $('payment-modal').classList.remove('active');
+      clearInterval(confirmPollTimer);
+    }
+
+    function generateQR() {
+      const upiLink = `upi://pay?pa=${matchData.upi}&pn=ABCC&am=${currentBooking.amount}.00&cu=INR&tn=${currentBooking.id}`;
+      $('qr').innerHTML = '';
+      try {
+        new QRCode($('qr'), {
+          text: upiLink,
+          width: 150,
+          height: 150
+        });
+      } catch (e) {
+        console.error('QR generation failed:', e);
+      }
+    }
+
+    function launchUPI() {
+      const upiLink = `upi://pay?pa=${matchData.upi}&pn=ABCC&am=${currentBooking.amount}.00&cu=INR&tn=${currentBooking.id}`;
+      window.location.href = upiLink;
+    }
+
+    function copyUPI() {
+      navigator.clipboard?.writeText(matchData.upi);
+      alert('UPI ID copied! Paste in your UPI app');
+    }
+
+    function startTimer() {
+      let secs = currentBooking.secs;
+      const timer = () => {
+        const mins = Math.floor(secs / 60);
+        const sec = secs % 60;
+        $('hold-timer').textContent = `Slots held for ${mins}:${String(sec).padStart(2, '0')}`;
+        if (secs <= 0) {
+          clearInterval(timerInterval);
+        }
+        secs--;
+      };
+      timer();
+      const timerInterval = setInterval(timer, 1000);
+    }
+
+    async function confirmPayment() {
+      $('paid-btn').disabled = true;
+      try {
+        await API('/api/paid', 'POST', { id: currentBooking.id });
+
+        // Switch to success screen
+        $('pay-screen').classList.remove('active');
+        $('success-screen').classList.add('active');
+        $('booking-id-display').textContent = currentBooking.id;
+
+        // Poll for confirmation
+        confirmPollTimer = setInterval(pollStatus, 3000);
+        pollStatus(); // Check immediately
+      } catch (e) {
+        $('pay-error').textContent = e.message;
+      }
+      $('paid-btn').disabled = false;
+    }
+
+    async function pollStatus() {
+      try {
+        const booking = await API(`/api/booking/${currentBooking.id}`);
+        const status = booking.status;
+
+        if (status === 'confirmed') {
+          $('status-text').innerHTML = '✓ Payment confirmed! WhatsApp incoming...';
+          $('status-text').style.color = 'var(--success)';
+          clearInterval(confirmPollTimer);
+        } else if (status === 'rejected') {
+          $('status-text').innerHTML = 'Payment not confirmed. We\'ll contact you.';
+          $('status-text').style.color = '#E74C3C';
+          clearInterval(confirmPollTimer);
+        } else {
+          $('status-text').innerHTML = 'Confirming payment... Usually takes 1-2 minutes';
+        }
+      } catch (e) {
+        // Keep polling
+      }
+    }
+
+    function copyBookingId() {
+      navigator.clipboard?.writeText(currentBooking.id);
+      alert('Booking ID copied!');
+    }
+
+    function backToHome() {
+      closePaymentModal();
+      $('success-screen').classList.remove('active');
+      $('pay-screen').classList.add('active');
+      $('mobile').value = '';
+      $('name').value = '';
+      playerCount = 1;
+      updateCounter();
+      loadMatch();
+    }
+
+    // Initialize
+    loadMatch();
+    setInterval(loadMatch, 15000); // Refresh every 15 seconds
+  </script>
+</body>
+</html>
